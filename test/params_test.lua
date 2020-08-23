@@ -27,7 +27,7 @@ end)
 
 g.test_params = function()
    local conn = g.conn
-   local rc, err = conn:exec([[ select $1::int, $2, $3::date, $4::money; select 'Hello world']],
+   local rc, err = conn:exec([[ select $1::int, $2, $3::date, $4::money;]],
       {1, "a", '2030-01-01', '$5'}
    )
    t.assert(rc ~= nil)
@@ -66,4 +66,14 @@ g.test_not_that_place = function()
    t.assert(rc ~= nil)
    t.assert(err == nil)
    t.assert_equals(type(rc[1]), 'string')
+end
+
+g.test_multi_statement_params = function()
+   local conn = g.conn
+   local rc, err = conn:exec([[ select $1::int; select 'Hello']],
+      {'aaaaa'}
+   )
+   t.assert(rc ~= nil)
+   t.assert(err == nil)
+   t.assert_equals(type(rc[1]), 'string') -- multiple statement
 end
