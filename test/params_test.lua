@@ -27,7 +27,7 @@ end)
 
 g.test_params = function()
    local conn = g.conn
-   local rc, err = conn:exec([[ select $1::int, $2, $3::date, $4::money]],
+   local rc, err = conn:exec([[ select $1::int, $2, $3::date, $4::money; select 'Hello world']],
       {1, "a", '2030-01-01', '$5'}
    )
    t.assert(rc ~= nil)
