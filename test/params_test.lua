@@ -3,7 +3,7 @@ local pg = require('luapg')
 local log = require('log')
 
 local t = require('luatest')
-local g = t.group('luapg')
+local g = t.group('luapg-params')
 
 --[[
    export PGHOST="IP"  \
