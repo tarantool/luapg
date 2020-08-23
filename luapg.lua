@@ -519,9 +519,32 @@ function _M._unsafe_exec(self, command, args, opts)
       end
    end
 
-   local rc = libpq.PQsendQuery(self.conn, command)
-   if rc == -1 then
-      return nil, error_string(self.conn)
+   if args and #args > 0 then
+      local args_count = #args
+      local types = box.NULL --ffi.new("oid[?]", args_count)
+      local strargs = {}
+      for i=1,args_count do
+         table.insert(strargs, tostring(args[i]))
+      end
+      local values = ffi.new("const char*[?]", #strargs, strargs)
+
+      local rc = libpq.PQsendQueryParams(self.conn,
+                                         command,
+                                         args_count,
+                                         box.NULL,
+                                         values,
+                                         NULL,
+                                         NULL,
+                                         0)
+      if rc == -1 then
+         return nil, error_string(self.conn)
+      end
+   else
+
+      local rc = libpq.PQsendQuery(self.conn, command)
+      if rc == -1 then
+         return nil, error_string(self.conn)
+      end
    end
 
    --[[
