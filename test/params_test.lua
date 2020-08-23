@@ -77,3 +77,36 @@ g.test_multi_statement_params = function()
    t.assert(err == nil)
    t.assert_equals(type(rc[1]), 'string') -- multiple statement
 end
+
+g.test_large_param = function()
+   local conn = g.conn
+   local data = {}
+   for i=1, 1e7 do
+      table.insert(data, 'Hello')
+   end
+   data = table.concat(data)
+   local rc, err = conn:exec([[ select $1::text]],
+      {data}
+   )
+   t.assert(rc ~= nil)
+   t.assert(err == nil)
+   t.assert_equals(rc[1](0,0), data) -- multiple statement
+end
+
+g.test_param_large_count = function()
+   local conn = g.conn
+   local pos = {}
+   local data = {}
+   for i=1, 1000 do
+      table.insert(pos, "$"..tostring(i))
+      table.insert(data, 'Hello')
+   end
+   pos = table.concat(pos, ', ')
+   --data = table.concat(data)
+   local rc, err = conn:exec(([[ select %s]]):format(pos),
+      data
+   )
+   t.assert(rc ~= nil)
+   t.assert(err == nil)
+   t.assert_equals(rc[1](0,0), data[1]) -- multiple statement
+end
