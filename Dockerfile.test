@@ -1,13 +1,8 @@
 FROM centos:7
 
-ARG TARANTOOL_REPO
-
-ARG PGDATABASE
-ARG PGUSER
-ARG PGPASSWORD
-
 RUN yum -y install postgresql-devel \
-    yum -y install sudo
+    yum -y install sudo \
+    yum -y install git
 
 RUN curl -L https://tarantool.io/installer.sh | VER=2.5 sudo -E bash
 
@@ -19,6 +14,8 @@ ADD . /opt/luapg
 
 WORKDIR /opt/luapg
 
+RUN yum -y install cmake
+
 RUN tarantoolctl rocks install luatest 0.5.2
 
-RUN .rocks/bin/luatest -c
+ENTRYPOINT .rocks/bin/luatest -c

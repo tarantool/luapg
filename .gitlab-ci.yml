@@ -23,4 +23,5 @@ tests:
   stage: test
   script:
     - docker run -p5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-    - docker build --build-arg PGDATABASE="postgres" --build-arg PGUSER="postgres" --build-arg PGPASSWORD="mysecretpassword" -f Dockerfile.test -t luapg .
+    - docker build -f Dockerfile.test -t luapg .
+    - docker run --network=host --env PGHOST='127.0.0.1' --env PGUSER='postgres' --env PGPASSWORD='mysecretpassword' -it --rm luapg
