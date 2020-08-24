@@ -1,0 +1,22 @@
+FROM centos:7
+
+ARG PGDATABASE
+ARG PGUSER
+ARG PGPASSWORD
+
+RUN set -x \
+    && yum -y install https://repo.ius.io/ius-release-el7.rpm \
+    && yum -y install libpq
+
+RUN curl -s https://packagecloud.io/install/repositories/${TARANTOOL_REPO}/script.rpm.sh | bash
+RUN yum install -y tarantool tarantool-devel
+
+ENV PATH=$PWD:$PATH
+
+ADD . /opt/luapg
+
+WORKDIR /opt/luapg
+
+RUN tarantoolctl rocks install luatest 0.5.2
+
+RUN .rocks/bin/luatest -c
