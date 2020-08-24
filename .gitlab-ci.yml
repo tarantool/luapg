@@ -22,6 +22,5 @@ tests:
   extends: .dind
   stage: test
   script:
-    - yum install libpq
     - docker run -p5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
     - docker build --build-arg PGDATABASE="postgres" --build-arg PGUSER="postgres" --build-arg PGPASSWORD="mysecretpassword" -f Dockerfile.test -t luapg .
