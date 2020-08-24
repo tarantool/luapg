@@ -1,0 +1,29 @@
+stages:
+  - test
+
+default:
+  image: centos:8
+
+.dind:
+  tags:
+    - dind
+  services:
+    - name: docker:dind
+      alias: localhost
+      command: ["--mtu=1300"]
+  image: docker
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ''
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_BUILDKIT: 1
+
+tests:
+  extends: .dind
+  stage: test
+  script:
+    - yum install libpq
+    - docker run -p5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+    - export PGDATABASE="postgres" PGUSER="postgres" PGPASSWORD="mysecretpassword"
+    - tarantoolctl rocks install luatest
+    - .rocks/bin/luatest -c
