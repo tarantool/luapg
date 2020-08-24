@@ -11,6 +11,8 @@ RUN yum -y install postgresql-devel \
 
 RUN curl -L https://tarantool.io/installer.sh | VER=2.5 sudo -E bash
 
+RUN yum -y install tarantool-devel
+
 ENV PATH=$PWD:$PATH
 
 ADD . /opt/luapg
