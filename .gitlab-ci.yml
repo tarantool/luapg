@@ -25,5 +25,4 @@ tests:
     - yum install libpq
     - docker run -p5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
     - export PGDATABASE="postgres" PGUSER="postgres" PGPASSWORD="mysecretpassword"
-    - tarantoolctl rocks install luatest
-    - .rocks/bin/luatest -c
+    - docker build -e PGDATABASE -e PGUSER -e PGPASSWORD -f Dockerfile.test -t luapg .
