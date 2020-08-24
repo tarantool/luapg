@@ -483,7 +483,7 @@ function _M._wait_for_result(self, timeout)
       if rc ~= 1 then
          return nil, error_string(self.conn)
       end
-      if libpq.PQisBusy(conn) == true then
+      if libpq.PQisBusy(self.conn) == true then
          if timeout ~= nil then
             rest = timeout - (clock.time() - start)
             if rest < 0 then
@@ -613,9 +613,9 @@ function _M._unsafe_exec(self, command, args, opts)
       elseif status == libpq.PGRES_EMPTY_QUERY then
          table.insert(results, 'empty query')
       elseif status == libpq.PGRES_NONFATAL_ERROR then
-         table.insert(results, error_string(self.conn))
+         table.insert(results, ffi.string(libpq.PQresultErrorMessage(result)))
       elseif status == libpq.PGRES_FATAL_ERROR then
-         table.insert(results, error_string(self.conn))
+         table.insert(results, ffi.string(libpq.PQresultErrorMessage(result)))
       else
          table.insert(results, 'Unknown sql driver result')
       end
