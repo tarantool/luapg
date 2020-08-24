@@ -1,15 +1,15 @@
 FROM centos:7
 
+ARG TARANTOOL_REPO
+
 ARG PGDATABASE
 ARG PGUSER
 ARG PGPASSWORD
 
-RUN set -x \
-    && yum -y install https://repo.ius.io/ius-release-el7.rpm \
-    && yum -y install libpq
+RUN yum -y install postgresql-devel \
+    yum -y install sudo
 
-RUN curl -s https://packagecloud.io/install/repositories/${TARANTOOL_REPO}/script.rpm.sh | bash
-RUN yum install -y tarantool tarantool-devel
+RUN curl -L https://tarantool.io/installer.sh | VER=2.5 sudo -E bash
 
 ENV PATH=$PWD:$PATH
 
