@@ -37,7 +37,7 @@ end
 conn.subscriber = subscriber
 local rc, err = conn:exec([[ listen pubsub ]])
 
-local rc, err = conn:exec([[ notify pubsub, "Push message" ]])
+local rc, err = conn:exec([[ notify pubsub, 'Push message' ]])
 
 -- disconnect
 conn = nil
