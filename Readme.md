@@ -29,6 +29,16 @@ print(rc[2](0, 2)) -- c
 local rc, err = conn:exec([[ select $1, $2::money ]], {1, '$5'}, {timeout = 5})
 print(rc[1](0, 1))
 
+-- listen/notify
+local subscriber = function(conn, chan, payload, id)
+    print(chan, payload)
+end
+
+conn.subscriber = subscriber
+local rc, err = conn:exec([[ listen pubsub ]])
+
+local rc, err = conn:exec([[ notify pubsub, "Push message" ]])
+
 -- disconnect
 conn = nil
 collectgarbage('collect')

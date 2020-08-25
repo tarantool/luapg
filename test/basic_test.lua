@@ -103,9 +103,9 @@ g.test_values = function()
    t.assert(err == nil, err)
 
    t.assert(rc[1](0,0) == 1)
-   t.assert(rc[1](0,1) == 'one')
-   t.assert(rc[1](2,0) == 3)
-   t.assert(rc[1](2,1) == 'three')
+   t.assert_equals(rc[1](0,1), 'one')
+   t.assert_equals(rc[1](2,0), 3)
+   t.assert_equals(rc[1](2,1), 'three')
 end
 
 g.test_transaction = function()
@@ -136,10 +136,10 @@ g.test_transaction_abort = function()
    t.assert(rc ~= nil, err)
    t.assert(err == nil, err)
 
-   t.assert(rc[1] == 'command ok', rc[1])
-   t.assert(rc[2] == 'command ok', rc[2])
-   t.assert(rc[3](0,0) == 1, rc[3])
-   t.assert(rc[4] == 'command ok', rc[3])
+   t.assert_equals(rc[1], 'command ok', rc[1])
+   t.assert_equals(rc[2], 'command ok', rc[2])
+   t.assert_equals(rc[3](0,0), 1, rc[3])
+   t.assert_equals(rc[4], 'command ok', rc[3])
 
    local rc, err = conn:exec([[
        select * from test;
@@ -147,7 +147,7 @@ g.test_transaction_abort = function()
    t.assert(rc ~= nil, err)
    t.assert(err == nil, err)
 
-   t.assert(type(rc[1]) == 'string' , rc[1])
+   t.assert_equals(type(rc[1]), 'string' , rc[1])
    t.assert(rc[1]:find('does not exist'), rc[1])
 end
 
