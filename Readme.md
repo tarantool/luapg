@@ -66,3 +66,12 @@ elseif err:find('server closed') then
 end
 return rc, err
 ```
+
+## Testing
+
+``` bash
+tarantoolctl rocks install luatest
+
+export PGHOST="127.0.0.1" PGDATABASE="postgres" PGUSER="postgres" # replace creds
+.rocks/bin/luatest -c
+```

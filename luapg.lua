@@ -1,16 +1,9 @@
 local log = require('log')
 local fiber = require('fiber')
-
 local clock = require('clock')
 local socket = require('socket')
 
-local ffi    = require('ffi')
-local ffistr = ffi.string
-
-local ok, new_tab = pcall(require, "table.new")
-if not ok then
-    new_tab = function (narr, nrec) return {} end
-end
+local ffi = require('ffi')
 
 if not pcall(function() return ffi.C.PQconnectStart end) then
    ffi.cdef([[
