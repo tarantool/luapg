@@ -526,8 +526,8 @@ function _M._unsafe_exec(self, command, args, opts)
                                          args_count,
                                          box.NULL,
                                          values,
-                                         NULL,
-                                         NULL,
+                                         box.NULL,
+                                         box.NULL,
                                          0)
       if rc == -1 then
          return nil, error_string(self.conn)

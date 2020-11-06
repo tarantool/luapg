@@ -110,3 +110,13 @@ g.test_param_large_count = function()
    t.assert(err == nil)
    t.assert_equals(rc[1](0,0), data[1]) -- multiple statement
 end
+
+require ('strict').on()
+
+g.test_invalid_params = function()
+    local conn = g.conn
+    local rc, err = conn:exec([[ select $1::int; select 'Hello']], ('x'):rep(10))
+    t.assert(rc ~= nil)
+    t.assert(err == nil)
+    t.assert_equals(type(rc[1]), 'string') -- multiple statement
+end
