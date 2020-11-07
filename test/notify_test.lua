@@ -1,4 +1,5 @@
 -- test/feature_test.lua
+require('strict').on()
 local pg = require('luapg')
 local log = require('log')
 local fiber = require('fiber')

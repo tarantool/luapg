@@ -1,4 +1,6 @@
 -- test/feature_test.lua
+require('strict').on()
+
 local pg = require('luapg')
 local log = require('log')
 
@@ -111,7 +113,6 @@ g.test_param_large_count = function()
    t.assert_equals(rc[1](0,0), data[1]) -- multiple statement
 end
 
-require ('strict').on()
 
 g.test_invalid_params = function()
     local conn = g.conn
